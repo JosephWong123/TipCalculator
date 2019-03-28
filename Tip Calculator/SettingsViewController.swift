@@ -10,13 +10,72 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    let defaults = UserDefaults.standard
+    
+    @IBOutlet weak var Label2: UILabel!
+    @IBOutlet weak var Label1: UILabel!
+    @IBOutlet weak var defaultTipControl: UISegmentedControl!
+    @IBOutlet weak var darkSwitch: UISwitch!
+    
+    @IBAction func enableDarkMode(_ sender: UISwitch) {
+        
+        if sender.isOn {
+            defaults.set(true, forKey:"Dark")
+            self.view.backgroundColor = UIColor.black
+            Label2.textColor = UIColor.white
+            Label1.textColor = UIColor.white
+            defaultTipControl.backgroundColor = UIColor.black
+            defaultTipControl.tintColor = UIColor.orange
+        }
+        else {
+            defaults.set(false, forKey:"Dark")
+            self.view.backgroundColor = UIColor.white
+            Label2.textColor = UIColor.black
+            Label1.textColor = UIColor.black
+            defaultTipControl.backgroundColor = UIColor.white
+            defaultTipControl.tintColor = UIColor.blue
+        }
+        defaults.synchronize()
+    }
+    @IBAction func changeDefaultPercent(_ sender: Any) {
+        let tipPercentages = [0.15, 0.18, 0.2]
+        let percent = tipPercentages[tipControl.selectedSegmentIndex]
+        defaults.set(percent, forKey: "percent")
+        defaults.synchronize()
     }
     
+    @IBOutlet weak var tipControl: UISegmentedControl!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if defaults.bool(forKey: "Dark") {
+            self.view.backgroundColor = UIColor.black
+            Label2.textColor = UIColor.white
+            Label1.textColor = UIColor.white
+            defaultTipControl.backgroundColor = UIColor.black
+            defaultTipControl.tintColor = UIColor.orange
+            darkSwitch.setOn(true, animated: false)
+        }
+        else {
+            self.view.backgroundColor = UIColor.white
+            Label2.textColor = UIColor.black
+            Label1.textColor = UIColor.black
+            defaultTipControl.backgroundColor = UIColor.white
+            defaultTipControl.tintColor = UIColor.blue
+            darkSwitch.setOn(false, animated: false)
+        }
+    }
+        
+    
+        
+        
+        
 
+        // Do any additional setup after loading the view.
+    
+    
     /*
     // MARK: - Navigation
 
